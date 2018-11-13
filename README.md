@@ -1,1 +1,23 @@
 # rundeck
+
+DOWNLOAD INSTRUCTIONS:
+FOR UBUNTU:
+1.CREATE A DIRECTORY rundeck/ AND CHANGE DIRECTORY TO rundeck/
+    mkdir rundeck && cd rundeck
+2.DOWNLOAD THE SCRIPT "install_rundeck.sh" FROM THE CURRENT GIT REPO(2018CS303) to rundeck/
+3.CHANGE PERMISSIONS OF THE SCRIPT 
+  chmod a+x install_rundeck.sh
+4.RUN THE SCRIPT
+  ./install_rundeck.sh
+5.AFTER INSTALLATION IS COMPLLETE,START THE SERVICE 
+  sudo service rundeckd start
+6.AFTER THE APPLICATION STARTS OPEN http://localhost:4440 on browser
+
+FOR MAC:
+1.CREATE A DIRECTORY rundeck/ AND CHANGE DIRECTORY TO rundeck/
+    mkdir rundeck && cd rundeck
+2.DOWNLOAD rundeck-3.0.8-20181029.war from https://dl.bintray.com/rundeck/rundeck-maven/rundeck-3.0.8-20181029.war
+3.EXECUTE THE WAR FILE DOWNLOADED
+    java -jar rundeck-3.0.8-20181029.war
+4.AFTER INSTALLATION COMPLETES, OPEN http://localhost:4440 on browser
+
