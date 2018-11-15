@@ -27,3 +27,68 @@ FOR MAC:
 7. DEFAULT CREDENTIALS :
     USERNAME: admin 
     PASSWORD: admin
+    
+RUNDECK CAN BE USED TO CONFIGURE THE RESOURCES REQUIRED FOR A PROJECT.FOR EXAMPLE, FOR A PROJECT ALL THE DEVELOPER SYSTEM ENVIRONMENTS ARE SUPPOSED TO BE IN SYNC.THIS CAN BE DONE USING RUNDECK. ALL THESE SYSTEMS ARE CALLED NODES.RUNDECK CAN DO THIS USING SSH.THEREFORE RUNDECK HOST AND ALL THE NODES MUST HAVE SSH INSTALLED AND RUNNING.
+
+AFTER LOGGING IN TO RUNDECK USING DEFAULT CREDENTIALS,CLICK ON NEW PROJECT.
+1.FILL PROJECT NAME AND DESCRIPTION.
+2.IN "DEFAULT NODE EXECUTOR" TAB SELECT "SSH".
+3.AFTER SELECTING SSH A FORM OPENS. WE NEED TO FILL "SSH KEY FILE PATH".FOR THIS WE NEED TO GENERATE AN SSH KEY ON RUNDECK HOST.
+  RUNDECK HOST ON MAC:
+    mkdir .ssh && cd .ssh && ssh-keygen -t rsa
+      WHEN PROMPTED FOR FILE TO SAVE TO TYPE "id_rsa"
+  RUNDECK HOST ON UBUNTU:
+    mkdir .ssh && cd .ssh && ssh-keygen -t rsa
+      WHEN PROMPTED FOR FILE TO SAVE TO TYPE "id_rsa"
+4.AFTER THE KEY IS GENERATED COPY THE "id_rsa" path (FOR EXAMPLE: /Users/sravyagoli/Desktop/rundeck/.ssh/id_rsa) and paste in "ssh key file path".
+5. IN THE SAME TAB PUT "SSH AUTHENTICATION" TO "privateKey"
+6.IN THE "DEFAULT NODE FILE COPIER" TAB SELECT SCP AND FILL "SSH KEY FILE PATH" AND "SSH AUTHENTICATION" SAME AS THE ONES IN "DEFAULT NODE EXECUTOR" TAB
+7. CLLICK ON CREATE
+
+TO CREATE NODES
+1.CLICK ON "ADD SOURCE"
+2.CLICK ON "FILE"
+3.ENTER THE FILE PATH "rundeck/projects/project_name/etc/resources.xml"
+4.select "Generate","Include server node" and "writable" options
+5.click on "save".
+
+NOW YOU CAN EDIT RESOURCE FILE.THE RESOURCE FILE CONTAINS NODE INFORMATION. U CAN EXECUTE COMMANDS ON THE NODES BY CONFIGURING 
+NODE INFORMATION IN THE RESOURCE FILE AND THE RUNDECK HOST INFORMATION IN THE NODES.
+
+EDIT nodes file
+1.click on "edit nodes file"
+2.this shows a resources.xml file.
+3. to add an ubuntu node:
+<node name="name_of_the node" description="node_description" tags="" hostname="ip_address_of_node" osArch="amd64" osFamily="unix" osName="Linux" osVersion="4.4.0-124-generic" username="username_of_the_node_for_ssh_login"/>
+to add os x node:
+<node name="name_of_the node" description="node_description" tags="" hostname="ip_address_of_node" osArch="x86_64" osFamily="unix" osName="Mac OS X" osVersion="17.7.0" username="username_of_the_node_for_ssh_login"/>
+
+the version may vary therefore use "uname -r" to get right version of the node
+
+put the above lines between <project></project> tags
+
+ON THE NODE SYSTEM
+
+1.COPY RUNDECK HOST PUBLIC KEY PRESENT IN (rundeck/.ssh/id_rsa) AND PASTE IN NODE'S .ssh/authorized_keys file.(if file not 
+present create one)
+2.restart ssh service on node.
+MAC NODE:
+sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+
+UBUNTU NODE:
+sudo systemctl restart sshd 
+
+CREATE A JOB:
+1.IN THE JOBS TAB, CLICK ON CREATE NEW JOB.
+2.FILL JOB NAME
+3.IN THE WORKFLOW,CLICK ON "ADD A STEP" THEN CLICK ON "COMMAND EXECUTE".
+4.ADD SOME COMMAND (FOR EXAMPLE :"echo SE")
+5.IN THE NODES , SELECT "DISPATCH TO NODES" THEN SELECT NODES FOR THE COMMANDS TO EXECUTE ON
+6.CLICK ON CREATE
+7.CLICK ON RUN JOB NOW
+8.A GREEN TICK APPEARS SHOWING THE JOB RUNNED SUCCESSFULLY.
+
+
+
+
