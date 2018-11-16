@@ -48,7 +48,7 @@ AFTER LOGGING IN TO RUNDECK USING DEFAULT CREDENTIALS,CLICK ON NEW PROJECT.
 TO CREATE NODES
 1.CLICK ON "ADD SOURCE"
 2.CLICK ON "FILE"
-3.ENTER THE FILE PATH "rundeck/projects/project_name/etc/resources.xml"
+3.ENTER THE FILE PATH "/var/rundeck/projects/project_name/etc/resources.xml"
 4.select "Generate","Include server node" and "writable" options
 5.click on "save".
 
